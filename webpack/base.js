@@ -6,14 +6,18 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 module.exports = {
   mode: "development",
   devtool: "eval-source-map",
+  entry: './src/index.ts',
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.ts?$/,
+        use: 'babel-loader',
         exclude: /node_modules/,
-        use: {
-          loader: "babel-loader"
-        }
+      },
+      {
+        test: /\.js$/,
+        use: ["source-map-loader"],
+        enforce: "pre"
       },
       {
         test: [/\.vert$/, /\.frag$/],
@@ -24,6 +28,9 @@ module.exports = {
         use: "file-loader"
       }
     ]
+  },
+  resolve: {
+    extensions: ['.ts', '.js'],
   },
   plugins: [
     new CleanWebpackPlugin({
